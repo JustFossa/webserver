@@ -60,8 +60,9 @@ fn handle_connection(mut stream: TcpStream, config: Arc<Mutex<HashMap<String,Str
     let method = vector[0];
     let path = vector[1];
     let file = path.split("/").collect::<Vec<&str>>()[1];
+    let config = &*config.lock().unwrap();
 
-    let file_path = format!("{}/{}", config.lock().unwrap()["server_root"], file);
+    let file_path = format!("{}/{}", config["server_root"], file);
 
     match fs::read_to_string(file_path) {
         Ok(contents) => {
