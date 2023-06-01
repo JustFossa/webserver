@@ -27,8 +27,8 @@ async fn main() -> std::io::Result<()> {
             println!("[LOGGING]: 404.html has been found!")
         }
         Err(_) => {
-            println!("[LOGGING]: 404.html not found, creating one for you!");
-            let res = reqwest::get("https://raw.githubusercontent.com/justfossa/webserver/404.html").await.unwrap().text().await;
+            println!("[LOGGING]: 404.html not found, creating one for you");
+            let res = reqwest::get("https://raw.githubusercontent.com/JustFossa/webserver/main/404.html").await.unwrap().text().await;
             let clean_contents = res.unwrap().replace("\n", "").replace("\\","");
             let mut file = fs::File::create("404.html").unwrap();
             file.write(clean_contents.as_bytes())?;
