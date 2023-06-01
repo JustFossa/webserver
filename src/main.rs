@@ -59,18 +59,20 @@ fn handle_connection(mut stream: TcpStream, config: Arc<Mutex<HashMap<String,Str
     let vector = req_string.split(" ").collect::<Vec<&str>>();
     let method = vector[0];
     let path = vector[1];
-    let file = path.split("/").collect::<Vec<&str>>()[1];
+    let file = path.split("/").collect::<Vec<&str>>()[1].split(".").collect::<Vec<&str>>()[0];
     let config = &*config.lock().unwrap();
 
-    let file_path = format!("{}/{}", config["server_root"], file);
 
+    let file_path = format!("{}/{}.html", config["server_root"], file);
+
+    println!("{}", file_path);
     match fs::read_to_string(file_path) {
         Ok(contents) => {
             let response = format!("HTTP/1.1 200 OK\r\n Content-Length: {}\r\n\r\n{}", contents.len(), contents);
             stream.write(response.as_bytes()).unwrap();
         }
         Err(_) => {
-            let contents = fs::read_to_string("404.html").unwrap();
+            let contents = fs::read_to_string(format!("{}/404.html", config["server_root"])).unwrap();
             let response = format!("HTTP/1.1 404 Not found\r\n Content-Length: {}\r\n\r\n{}", contents.len(), contents);
             stream.write(response.as_bytes()).unwrap();
         }
