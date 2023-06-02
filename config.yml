@@ -1,3 +1,5 @@
 port: 80 # port that the server listens on
 ip: 127.0.0.1 # ip that the server listens on
 server_root:  C:\Users\panko\Documents\coding\pamatky-web #use . for default
+not_found_file: 404.html # name of the file that will be displayed when the route isn't found
+logs_folder: C:\Users\panko\Documents\coding\pamatky-web\logs # path to folder where the logs will be stored
